@@ -1,9 +1,9 @@
- Calculadora Científica em C
+- Calculadora Científica em C
 
 Uma calculadora completa em linguagem C, com suporte a operações matemáticas básicas e avançadas, funções trigonométricas, logaritmos, operações de matriz (2x2 e 3x3) e armazenamento de histórico de cálculos.
 
 Funcionalidades
- Operações Básicas
+- Operações Básicas
 
 Soma
 
@@ -13,7 +13,7 @@ Multiplicação
 
 Divisão (com verificação de divisão por zero)
 
-Operações Avançadas
+-Operações Avançadas
 
 Potência
 
@@ -37,7 +37,7 @@ Cálculo da hipotenusa
 
 Área de um círculo
 
- Funções Trigonométricas
+- Funções Trigonométricas
 
 Seno
 
@@ -45,13 +45,13 @@ Cosseno
 
 Tangente
 
- Operações com Matrizes (3x3)
+- Operações com Matrizes (3x3)
 
 Soma de matrizes
 
 Multiplicação de matrizes
 
- Histórico de Cálculos
+- Histórico de Cálculos
 
 Armazena até 100 operações
 
