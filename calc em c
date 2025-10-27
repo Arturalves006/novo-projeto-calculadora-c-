@@ -2,10 +2,10 @@
 #include <math.h>
 #include <stdlib.h>
 
-// Definindo o tamanho máximo do histórico
+// tamanho máximo do histórico
 #define MAX_HISTORICO 100
 
-// Estrutura para armazenar o histórico de cálculos
+// histórico de cálculos
 typedef struct {
     int opcao;
     double num1;
@@ -14,7 +14,7 @@ typedef struct {
     char operacao[50];
 } Historico;
 
-// Função para calcular o fatorial
+//  calcular o fatorial
 long long fatorial(int n) {
     long long fat = 1;
     for (int i = 1; i <= n; i++) {
@@ -23,7 +23,7 @@ long long fatorial(int n) {
     return fat;
 }
 
-// Função para somar duas matrizes
+//  somar duas matrizes
 void soma_matrizes(double A[3][3], double B[3][3], double C[3][3], int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -32,7 +32,7 @@ void soma_matrizes(double A[3][3], double B[3][3], double C[3][3], int n) {
     }
 }
 
-// Função para multiplicar duas matrizes
+//  multiplicar duas matrizes
 void multiplicacao_matrizes(double A[3][3], double B[3][3], double C[3][3], int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -44,7 +44,7 @@ void multiplicacao_matrizes(double A[3][3], double B[3][3], double C[3][3], int 
     }
 }
 
-// Função para registrar o histórico
+//  registrar o histórico
 void registrar_historico(Historico *historico, int *count, int opcao, double num1, double num2, double resultado, const char *operacao) {
     if (*count < MAX_HISTORICO) {
         historico[*count].opcao = opcao;
@@ -58,7 +58,7 @@ void registrar_historico(Historico *historico, int *count, int opcao, double num
     }
 }
 
-// Função para exibir o histórico
+//  exibir o histórico
 void exibir_historico(Historico *historico, int count) {
     if (count == 0) {
         printf("Histórico vazio.\n");
