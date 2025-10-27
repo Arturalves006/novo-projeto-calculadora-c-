@@ -2,86 +2,75 @@
 #include <math.h>
 #include <stdlib.h>
 
-// tamanho máximo do histórico
 #define MAX_HISTORICO 100
+#define MAX_NUMEROS 100
 
-// histórico de cálculos
 typedef struct {
     int opcao;
-    double num1;
-    double num2;
     double resultado;
     char operacao[50];
 } Historico;
 
-//  calcular o fatorial
+// Função para fatorial
 long long fatorial(int n) {
     long long fat = 1;
-    for (int i = 1; i <= n; i++) {
-        fat *= i;
-    }
+    for (int i = 1; i <= n; i++) fat *= i;
     return fat;
 }
 
-//  somar duas matrizes
+// Soma de matrizes 3x3
 void soma_matrizes(double A[3][3], double B[3][3], double C[3][3], int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
             C[i][j] = A[i][j] + B[i][j];
-        }
-    }
 }
 
-//  multiplicar duas matrizes
+// Multiplicação de matrizes 3x3
 void multiplicacao_matrizes(double A[3][3], double B[3][3], double C[3][3], int n) {
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++) {
             C[i][j] = 0;
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k < n; k++)
                 C[i][j] += A[i][k] * B[k][j];
-            }
         }
-    }
 }
 
-//  registrar o histórico
-void registrar_historico(Historico *historico, int *count, int opcao, double num1, double num2, double resultado, const char *operacao) {
+// Registrar histórico
+void registrar_historico(Historico *historico, int *count, int opcao, double resultado, const char *operacao) {
     if (*count < MAX_HISTORICO) {
         historico[*count].opcao = opcao;
-        historico[*count].num1 = num1;
-        historico[*count].num2 = num2;
         historico[*count].resultado = resultado;
         snprintf(historico[*count].operacao, sizeof(historico[*count].operacao), "%s", operacao);
         (*count)++;
     } else {
-        printf("Erro: Histórico de cálculos cheio!\n");
+        printf("Erro: Histórico cheio!\n");
     }
 }
 
-//  exibir o histórico
+// Exibir histórico
 void exibir_historico(Historico *historico, int count) {
     if (count == 0) {
         printf("Histórico vazio.\n");
     } else {
-        printf("\nHistórico de Cálculos:\n");
+        printf("\n===== HISTÓRICO DE CÁLCULOS =====\n");
         for (int i = 0; i < count; i++) {
-            printf("%s: %.4lf %.4lf = %.4lf\n", historico[i].operacao, historico[i].num1, historico[i].num2, historico[i].resultado);
+            printf("%d) %s = %.4lf\n", i + 1, historico[i].operacao, historico[i].resultado);
         }
     }
 }
 
 int main() {
     int opcao, count_historico = 0;
-    double num1, num2, resultado;
+    double resultado = 0;
     Historico historico[MAX_HISTORICO];
 
     do {
-        printf("\nEscolha a operação desejada:\n");
-        printf("1. Soma\n");
-        printf("2. Subtracao\n");
-        printf("3. Multiplicacao\n");
-        printf("4. Divisao\n");
-        printf("5. Potencia\n");
+        printf("\n===== CALCULADORA CIENTÍFICA =====\n");
+        printf("1. Soma (vários números)\n");
+        printf("2. Subtração (vários números)\n");
+        printf("3. Multiplicação (vários números)\n");
+        printf("4. Divisão (vários números)\n");
+        printf("5. Potência\n");
         printf("6. Raiz Quadrada\n");
         printf("7. Logaritmo Natural (ln)\n");
         printf("8. Logaritmo Base 10\n");
@@ -98,262 +87,407 @@ int main() {
         printf("19. Graus para Radianos\n");
         printf("20. Radianos para Graus\n");
         printf("21. Área do Círculo\n");
-        printf("22. Exibir Histórico\n");
-        printf("23. Soma de Matrizes (2x2 ou 3x3)\n");
-        printf("24. Multiplicação de Matrizes (2x2 ou 3x3)\n");
+        printf("22. Exibir Historico\n");
+        printf("23. Soma de Matrizes (3x3)\n");
+        printf("24. Multiplicação de Matrizes (3x3)\n");
         printf("0. Sair\n");
-        printf("Digite a opção: ");
+        printf("Escolha a opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
-            case 1:  // Soma
-                printf("Digite dois números: ");
-                scanf("%lf %lf", &num1, &num2);
-                resultado = num1 + num2;
-                printf("Resultado: %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, num2, resultado, "Soma");
-                break;
-
-            case 2:  // Subtração
-                printf("Digite dois números: ");
-                scanf("%lf %lf", &num1, &num2);
-                resultado = num1 - num2;
-                printf("Resultado: %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, num2, resultado, "Subtração");
-                break;
-
-            case 3:  // Multiplicação
-                printf("Digite dois números: ");
-                scanf("%lf %lf", &num1, &num2);
-                resultado = num1 * num2;
-                printf("Resultado: %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, num2, resultado, "Multiplicação");
-                break;
-
-            case 4:  // Divisão
-                printf("Digite dois números: ");
-                scanf("%lf %lf", &num1, &num2);
-                if (num2 != 0) {
-                    resultado = num1 / num2;
-                    printf("Resultado: %.4lf\n", resultado);
-                    registrar_historico(historico, &count_historico, opcao, num1, num2, resultado, "Divisão");
-                } else {
-                    printf("Erro: divisão por zero!\n");
+            case 1: { // Soma
+                int n;
+                double numeros[MAX_NUMEROS];
+                resultado = 0;
+                printf("Quantos números deseja somar? ");
+                scanf("%d", &n);
+                if (n <= 1|| n > MAX_NUMEROS) {
+                    printf("Quantidade inválida!\n");
+                    break;
                 }
+                printf("Digite os %d números:\n", n);
+                for (int i = 0; i < n; i++) {
+                    scanf("%lf", &numeros[i]);
+                    resultado += numeros[i];
+                }
+                printf("Resultado: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Soma");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 5:  // Potência
+            case 2: { // Subtração
+                int n;
+                double numeros[MAX_NUMEROS];
+                printf("Quantos números deseja subtrair? ");
+                scanf("%d", &n);
+                if (n <= 1 || n > MAX_NUMEROS) {
+                    printf("Informe pelo menos 2 números.\n");
+                    break;
+                }
+                printf("Digite os %d números:\n", n);
+                for (int i = 0; i < n; i++) scanf("%lf", &numeros[i]);
+                resultado = numeros[0];
+                for (int i = 1; i < n; i++) resultado -= numeros[i];
+                printf("Resultado: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Subtração");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
+                break;
+            }
+
+            case 3: { // Multiplicação
+                int n;
+                double numeros[MAX_NUMEROS];
+                resultado = 1;
+                printf("Quantos números deseja multiplicar? ");
+                scanf("%d", &n);
+                if (n <= 0 || n > MAX_NUMEROS) {
+                    printf("Quantidade inválida!\n");
+                    break;
+                }
+                printf("Digite os %d números:\n", n);
+                for (int i = 0; i < n; i++) {
+                    scanf("%lf", &numeros[i]);
+                    resultado *= numeros[i];
+                }
+                printf("Resultado: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Multiplicação");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
+                break;
+            }
+
+            case 4: { // Divisão
+                int n;
+                double numeros[MAX_NUMEROS];
+                printf("Quantos números deseja dividir? ");
+                scanf("%d", &n);
+                if (n <= 1 || n > MAX_NUMEROS) {
+                    printf("Informe pelo menos 2 números.\n");
+                    break;
+                }
+                printf("Digite os %d números:\n", n);
+                for (int i = 0; i < n; i++) scanf("%lf", &numeros[i]);
+                resultado = numeros[0];
+                int erro = 0;
+                for (int i = 1; i < n; i++) {
+                    if (numeros[i] == 0) {
+                        printf("Erro: divisão por zero!\n");
+                        erro = 1;
+                        break;
+                    }
+                    resultado /= numeros[i];
+                }
+                if (!erro) {
+                    printf("Resultado: %.4lf\n", resultado);
+                    registrar_historico(historico, &count_historico, opcao, resultado, "Divisão");
+                }
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
+                break;
+            }
+
+            case 5: {
+                double base, expn;
                 printf("Digite a base e o expoente: ");
-                scanf("%lf %lf", &num1, &num2);
-                resultado = pow(num1, num2);
+                scanf("%lf %lf", &base, &expn);
+                resultado = pow(base, expn);
                 printf("Resultado: %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, num2, resultado, "Potência");
+                registrar_historico(historico, &count_historico, opcao, resultado, "Potência");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 6:  // Raiz Quadrada
+            case 6: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                if (num1 >= 0) {
-                    resultado = sqrt(num1);
+                scanf("%lf", &num);
+                if (num < 0) printf("Erro: número negativo!\n");
+                else {
+                    resultado = sqrt(num);
                     printf("Resultado: %.4lf\n", resultado);
-                    registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Raiz Quadrada");
-                } else {
-                    printf("Erro: raiz quadrada de número negativo não é definida!\n");
+                    registrar_historico(historico, &count_historico, opcao, resultado, "Raiz Quadrada");
                 }
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 7:  // Logaritmo Natural (ln)
+            case 7: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                if (num1 > 0) {
-                    resultado = log(num1);
+                scanf("%lf", &num);
+                if (num > 0) {
+                    resultado = log(num);
                     printf("Resultado: %.4lf\n", resultado);
-                    registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Logaritmo Natural");
-                } else {
-                    printf("Erro: logaritmo natural definido apenas para números positivos!\n");
-                }
+                    registrar_historico(historico, &count_historico, opcao, resultado, "Logaritmo Natural");
+                } else printf("Erro: número deve ser positivo!\n");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 8:  // Logaritmo Base 10
+            case 8: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                if (num1 > 0) {
-                    resultado = log10(num1);
+                scanf("%lf", &num);
+                if (num > 0) {
+                    resultado = log10(num);
                     printf("Resultado: %.4lf\n", resultado);
-                    registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Logaritmo Base 10");
-                } else {
-                    printf("Erro: logaritmo base 10 definido apenas para números positivos!\n");
-                }
+                    registrar_historico(historico, &count_historico, opcao, resultado, "Logaritmo Base 10");
+                } else printf("Erro: número deve ser positivo!\n");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 9:  // Seno
+            case 9: {
+                double ang;
                 printf("Digite o ângulo em graus: ");
-                scanf("%lf", &num1);
-                resultado = sin(num1 * M_PI / 180.0);
-                printf("Resultado (sen): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Seno");
+                scanf("%lf", &ang);
+                resultado = sin(ang * M_PI / 180.0);
+                printf("Seno: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Seno");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 10:  // Cosseno
+            case 10: {
+                double ang;
                 printf("Digite o ângulo em graus: ");
-                scanf("%lf", &num1);
-                resultado = cos(num1 * M_PI / 180.0);
-                printf("Resultado (cos): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Cosseno");
+                scanf("%lf", &ang);
+                resultado = cos(ang * M_PI / 180.0);
+                printf("Cosseno: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Cosseno");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 11:  // Tangente
+            case 11: {
+                double ang;
                 printf("Digite o ângulo em graus: ");
-                scanf("%lf", &num1);
-                resultado = tan(num1 * M_PI / 180.0);
-                printf("Resultado (tan): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Tangente");
+                scanf("%lf", &ang);
+                resultado = tan(ang * M_PI / 180.0);
+                printf("Tangente: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Tangente");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 12:  // Fatorial
+            case 12: {
+                int n;
                 printf("Digite um número inteiro: ");
-                scanf("%d", &num1);
-                if (num1 >= 0) {
-                    resultado = (double)fatorial((int)num1);
-                    printf("Resultado (fatorial): %.0lf\n", resultado);
-                    registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Fatorial");
-                } else {
-                    printf("Erro: fatorial não definido para números negativos!\n");
+                scanf("%d", &n);
+                if (n < 0) printf("Erro: número inválido!\n");
+                else {
+                    resultado = (double)fatorial(n);
+                    printf("Fatorial: %.0lf\n", resultado);
+                    registrar_historico(historico, &count_historico, opcao, resultado, "Fatorial");
                 }
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 13:  // Exponencial (e^x)
+            case 13: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                resultado = exp(num1);
-                printf("Resultado (e^x): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Exponencial");
+                scanf("%lf", &num);
+                resultado = exp(num);
+                printf("e^x = %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Exponencial");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 14:  // Valor Absoluto
+            case 14: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                resultado = fabs(num1);
-                printf("Resultado (valor absoluto): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Valor Absoluto");
+                scanf("%lf", &num);
+                resultado = fabs(num);
+                printf("Valor absoluto: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Valor Absoluto");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 15:  // Arredondar para cima (ceil)
+            case 15: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                resultado = ceil(num1);
-                printf("Resultado (ceil): %.0lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Arredondar para Cima");
+                scanf("%lf", &num);
+                resultado = ceil(num);
+                printf("Arredondado para cima: %.0lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Ceil");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 16:  // Arredondar para baixo (floor)
+            case 16: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                resultado = floor(num1);
-                printf("Resultado (floor): %.0lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Arredondar para Baixo");
+                scanf("%lf", &num);
+                resultado = floor(num);
+                printf("Arredondado para baixo: %.0lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Floor");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 17:  // Arredondar (round)
+            case 17: {
+                double num;
                 printf("Digite um número: ");
-                scanf("%lf", &num1);
-                resultado = round(num1);
-                printf("Resultado (round): %.0lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Arredondar");
+                scanf("%lf", &num);
+                resultado = round(num);
+                printf("Arredondado: %.0lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Round");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 18:  // Hipotenusa
-                printf("Digite os catetos do triângulo: ");
-                scanf("%lf %lf", &num1, &num2);
-                resultado = sqrt(num1 * num1 + num2 * num2);
-                printf("Resultado (hipotenusa): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, num2, resultado, "Hipotenusa");
+            case 18: {
+                double a, b;
+                printf("Digite os catetos: ");
+                scanf("%lf %lf", &a, &b);
+                resultado = sqrt(a*a + b*b);
+                printf("Hipotenusa: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Hipotenusa");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 19:  // Graus para radianos
+            case 19: {
+                double graus;
                 printf("Digite o ângulo em graus: ");
-                scanf("%lf", &num1);
-                resultado = num1 * (M_PI / 180.0);
-                printf("Resultado (graus para radianos): %.4lf rad\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Graus para Radianos");
+                scanf("%lf", &graus);
+                resultado = graus * (M_PI / 180.0);
+                printf("Radianos: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Graus para Radianos");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 20:  // Radianos para graus
+            case 20: {
+                double rad;
                 printf("Digite o ângulo em radianos: ");
-                scanf("%lf", &num1);
-                resultado = num1 * (180.0 / M_PI);
-                printf("Resultado (radianos para graus): %.4lf°\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Radianos para Graus");
+                scanf("%lf", &rad);
+                resultado = rad * (180.0 / M_PI);
+                printf("Graus: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Radianos para Graus");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 21:  // Área do Círculo
-                printf("Digite o raio do círculo: ");
-                scanf("%lf", &num1);
-                resultado = M_PI * num1 * num1;
-                printf("Resultado (área do círculo): %.4lf\n", resultado);
-                registrar_historico(historico, &count_historico, opcao, num1, 0, resultado, "Área do Círculo");
+            case 21: {
+                double raio;
+                printf("Digite o raio: ");
+                scanf("%lf", &raio);
+                resultado = M_PI * raio * raio;
+                printf("Área do círculo: %.4lf\n", resultado);
+                registrar_historico(historico, &count_historico, opcao, resultado, "Área do Círculo");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 22:  // Exibir Histórico
+            case 22:
                 exibir_historico(historico, count_historico);
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
 
-            case 23:  // Soma de Matrizes
-                printf("Digite os elementos da primeira matriz 3x3:\n");
+            case 23: {
                 double A[3][3], B[3][3], C[3][3];
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
+                printf("Digite a primeira matriz 3x3:\n");
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
                         scanf("%lf", &A[i][j]);
-                    }
-                }
-                printf("Digite os elementos da segunda matriz 3x3:\n");
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
+                printf("Digite a segunda matriz 3x3:\n");
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
                         scanf("%lf", &B[i][j]);
-                    }
-                }
                 soma_matrizes(A, B, C, 3);
-                printf("Resultado da soma das matrizes:\n");
+                printf("Resultado da soma:\n");
                 for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        printf("%.2lf ", C[i][j]);
-                    }
+                    for (int j = 0; j < 3; j++) printf("%.2lf ", C[i][j]);
                     printf("\n");
                 }
-                registrar_historico(historico, &count_historico, opcao, 0, 0, 0, "Soma de Matrizes");
+                registrar_historico(historico, &count_historico, opcao, 0, "Soma de Matrizes");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 24:  // Multiplicação de Matrizes
-                printf("Digite os elementos da primeira matriz 3x3:\n");
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
+            case 24: {
+                double A[3][3], B[3][3], C[3][3];
+                printf("Digite a primeira matriz 3x3:\n");
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
                         scanf("%lf", &A[i][j]);
-                    }
-                }
-                printf("Digite os elementos da segunda matriz 3x3:\n");
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
+                printf("Digite a segunda matriz 3x3:\n");
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
                         scanf("%lf", &B[i][j]);
-                    }
-                }
                 multiplicacao_matrizes(A, B, C, 3);
-                printf("Resultado da multiplicação das matrizes:\n");
+                printf("Resultado da multiplicação:\n");
                 for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        printf("%.2lf ", C[i][j]);
-                    }
+                    for (int j = 0; j < 3; j++) printf("%.2lf ", C[i][j]);
                     printf("\n");
                 }
-                registrar_historico(historico, &count_historico, opcao, 0, 0, 0, "Multiplicação de Matrizes");
+                registrar_historico(historico, &count_historico, opcao, 0, "Multiplicação de Matrizes");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
                 break;
+            }
 
-            case 0:  // Sair
+            case 0:
                 printf("Saindo...\n");
                 break;
 
             default:
-                printf("Opção inválida! Tente novamente.\n");
+                printf("Opção inválida!\n");
+                printf("Pressione enter para voltar ao menu");
+                getchar();
+                getchar();
         }
+
     } while (opcao != 0);
 
     return 0;
